@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "40940953078",
+    "project_id": "classic-solitaire-85241",
+    "storage_bucket": "classic-solitaire-85241.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40940953078:android:4a4fca2774905df2a7bbd7",
+        "android_client_info": {
+          "package_name": "com.huntergaming.gamedata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40940953078-mhh3knhb9qubktafeunvkg768rhaqj4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpYXOBlxq_kByB000fLHluG1elgNPbtJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40940953078-mhh3knhb9qubktafeunvkg768rhaqj4o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

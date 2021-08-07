@@ -1,44 +1,23 @@
 package com.huntergaming.gamedata.data
 
-import com.google.firebase.firestore.FirebaseFirestore
-import com.huntergaming.gamedata.RequestState
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.huntergaming.gamedata.model.Player
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import timber.log.Timber
-import javax.inject.Inject
+import javax.inject.Singleton
 
-@ExperimentalCoroutinesApi
-internal class PlayerDao @Inject constructor(
-    private val firestore: FirebaseFirestore
-): Dao<Player> {
+@Singleton
+@Dao
+interface PlayerDao {
 
-    override suspend fun create(data: Player): Flow<RequestState> = callbackFlow {
-        send(RequestState.InProgress)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun create(player: Player)
 
-        firestore.collection("ClassicSolitaire").document("PlayerData").set(data)
-            .addOnSuccessListener {
-                trySend(RequestState.Success)
-            }.addOnFailureListener {
-                Timber.e(it,"Failed to create the player.")
-                trySend(RequestState.Error(it.message))
-            }
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(player: Player)
 
-        awaitClose { cancel() }
-    }
-
-    override fun update(data: Player) {
-
-    }
-
-    override fun get(): Player {
-        TODO("Not yet implemented")
-    }
-
-    override fun delete() {
-
-    }
+    @Query("SELECT * FROM player")
+    suspend fun get(): Player
 }
