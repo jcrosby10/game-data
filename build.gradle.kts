@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 30
+        targetSdk = 31
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,10 +40,9 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.37")
     kapt("com.google.dagger:hilt-compiler:2.37")
 
-    val roomVersion = "2.3.0"
     implementation("androidx.room:room-runtime:2.3.0")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:2.3.0")
+    kapt("androidx.room:room-compiler:2.3.0")
 
     implementation("com.jakewharton.timber:timber:4.7.1")
 
