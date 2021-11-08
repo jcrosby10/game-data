@@ -10,13 +10,17 @@ import javax.inject.Singleton
 
 @Singleton
 @Dao
-internal interface PlayerSettingsDao : HunterGamingDao<PlayerSettings> {
+internal interface PlayerSettingsDao : HunterGamingDao<PlayerSettings>, HunterGamingMigrateDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     override suspend fun create(data: PlayerSettings)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun update(data: PlayerSettings)
+
+    override suspend fun migrateData() {
+        TODO("Migrate from Room to Firestore")
+    }
 
     @Query("SELECT * FROM player_settings")
     suspend fun read(): PlayerSettings

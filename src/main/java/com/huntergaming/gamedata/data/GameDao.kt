@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Dao
-internal interface GameDao : HunterGamingDao<Game> {
+internal interface GameDao : HunterGamingDao<Game>, HunterGamingMigrateDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     override suspend fun create(data: Game)
@@ -26,4 +26,8 @@ internal interface GameDao : HunterGamingDao<Game> {
 
     @Query("SELECT * FROM games ORDER BY score DESC LIMIT 10")
     suspend fun getTopTenGames(): List<Game>
+
+    override suspend fun migrateData() {
+        TODO("Migrate from Room to Firestore")
+    }
 }
