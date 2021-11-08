@@ -3,13 +3,12 @@ package com.huntergaming.gamedata.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import javax.inject.Inject
 
 /**
  * Data class for a game.
  */
 @Entity(tableName = "games")
-data class Game @Inject constructor(
+data class Game constructor(
     @ColumnInfo(typeAffinity = ColumnInfo.INTEGER)
     @PrimaryKey(autoGenerate = true)
     var id: Int,
@@ -21,12 +20,15 @@ data class Game @Inject constructor(
 
         @Volatile
         @JvmStatic
-        private var INSTANCE: Game? = null
+        private lateinit var INSTANCE: Game
 
         @JvmStatic
-        @JvmOverloads
-        fun getInstance(id: Int = INSTANCE?.id!!, score: Int = INSTANCE?.score!!): Game = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: Game(id, score).also { INSTANCE = it }
+        fun getInstance(): Game = INSTANCE
+
+        @JvmStatic
+        fun updateInstance(id: Int, score: Int): Game {
+            INSTANCE = Game(id, score)
+            return INSTANCE
         }
     }
 }

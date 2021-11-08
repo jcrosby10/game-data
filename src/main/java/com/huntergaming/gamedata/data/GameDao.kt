@@ -10,13 +10,13 @@ import javax.inject.Singleton
 
 @Singleton
 @Dao
-interface GameDao {
+internal interface GameDao : HunterGamingDao<Game> {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun create(data: Game)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    override suspend fun create(data: Game)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(data: Game)
+    override suspend fun update(data: Game)
 
     @Query("SELECT * FROM games WHERE id = :id")
     suspend fun get(id: Int): Game

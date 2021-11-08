@@ -1,10 +1,13 @@
 package com.huntergaming.gamedata.repository
 
-import com.huntergaming.gamedata.data.ClassicSolitaireCache
 import com.huntergaming.gamedata.data.GameDao
+import com.huntergaming.gamedata.data.HunterGamingFirebaseDao
 import com.huntergaming.gamedata.data.PlayerDao
+import com.huntergaming.gamedata.data.PlayerSettingsDao
 import com.huntergaming.gamedata.model.Game
 import com.huntergaming.gamedata.model.Player
+import com.huntergaming.gamedata.model.PlayerSettings
+import com.huntergaming.gamedata.preferences.HunterGamingPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -13,14 +16,45 @@ import javax.inject.Inject
  * The entry point for interacting with the database.
  */
 class SolitaireRepository @Inject constructor(
-    private val playerDao: PlayerDao,
-    private val gameDao: GameDao,
-    private val playerCache: ClassicSolitaireCache<String, Player>,
-    private val gameCache: ClassicSolitaireCache<String, Game>
+    private val hunterGamingPreferences: HunterGamingPreferences
 ) {
 
-    private val playerKey = "player"
-    private val gameKey = "game"
+    // to avoid errors about exposing internal class in public class
+    @Inject
+    internal lateinit var hunterGamingFirebaseDao: HunterGamingFirebaseDao
+
+    @Inject
+    internal lateinit var playerDao: PlayerDao
+
+    @Inject
+    internal lateinit var gameDao: GameDao
+
+    @Inject
+    internal lateinit var playerSettingsDao: PlayerSettingsDao
+
+    suspend fun getPlayerSettings(): Flow<DataRequestState> = flow {
+        emit(DataRequestState.InProgress)
+
+        runCatching {
+            val settings =
+                if (hunterGamingPreferences.canUseFirebase()) hunterGamingFirebaseDao.getPlayerSettings()
+                else playerSettingsDao.read()
+
+            emit(DataRequestState.Success(settings))
+        }
+            .getOrElse { emit(DataRequestState.Error(it.message)) }
+    }
+
+    suspend fun updatePlayerSettings(playerSettings: PlayerSettings): Flow<DataRequestState> = flow {
+        emit(DataRequestState.InProgress)
+            runCatching {
+                if (hunterGamingPreferences.canUseFirebase()) hunterGamingFirebaseDao.updatePlayerSettings(playerSettings)
+                else playerSettingsDao.update(playerSettings)
+
+                emit(DataRequestState.Success(Unit))
+            }
+                .getOrElse { emit(DataRequestState.Error(it.message)) }
+    }
 
     /**
      * Create a new player.
@@ -33,7 +67,6 @@ class SolitaireRepository @Inject constructor(
 
         runCatching {
             playerDao.create(player)
-            playerCache.add(playerKey, player)
             emit(DataRequestState.Success(Unit))
         }
             .getOrElse { emit(DataRequestState.Error(it.message)) }
@@ -50,7 +83,6 @@ class SolitaireRepository @Inject constructor(
 
         runCatching {
             playerDao.update(player)
-            playerCache.add(playerKey, player)
             emit(DataRequestState.Success(Unit))
         }
             .getOrElse { emit(DataRequestState.Error(it.message)) }
@@ -64,10 +96,7 @@ class SolitaireRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            if (playerCache.contains(playerKey)) emit(DataRequestState.Success(playerCache.get(playerKey)))
-            else playerCache.add(playerKey, playerDao.get())
-
-            emit(DataRequestState.Success(playerCache.get(playerKey)))
+            emit(DataRequestState.Success(playerDao.get()))
         }
             .getOrElse { emit(DataRequestState.Error(it.message)) }
     }
@@ -83,7 +112,6 @@ class SolitaireRepository @Inject constructor(
 
         runCatching {
             gameDao.create(game)
-            gameCache.add(gameKey, game)
             emit(DataRequestState.Success(Unit))
         }
             .getOrElse { emit(DataRequestState.Error(it.message)) }
@@ -100,7 +128,6 @@ class SolitaireRepository @Inject constructor(
 
         runCatching {
             gameDao.create(game)
-            gameCache.add(gameKey, game)
             emit(DataRequestState.Success(Unit))
         }
             .getOrElse { emit(DataRequestState.Error(it.message)) }
@@ -114,10 +141,7 @@ class SolitaireRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            if (gameCache.contains(gameKey)) emit(DataRequestState.Success(gameCache.get(gameKey)))
-            else gameCache.add(gameKey, gameDao.get(id))
-
-            emit(DataRequestState.Success(gameCache.get(gameKey)))
+            emit(DataRequestState.Success(gameDao.get(id)))
         }
             .getOrElse { emit(DataRequestState.Error(it.message)) }
     }

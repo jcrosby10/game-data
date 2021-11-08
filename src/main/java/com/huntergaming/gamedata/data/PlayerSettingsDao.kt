@@ -5,19 +5,19 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.huntergaming.gamedata.model.Player
+import com.huntergaming.gamedata.model.PlayerSettings
 import javax.inject.Singleton
 
 @Singleton
 @Dao
-internal interface PlayerDao : HunterGamingDao<Player> {
+internal interface PlayerSettingsDao : HunterGamingDao<PlayerSettings> {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    override suspend fun create(data: Player)
+    override suspend fun create(data: PlayerSettings)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    override suspend fun update(data: Player)
+    override suspend fun update(data: PlayerSettings)
 
-    @Query("SELECT * FROM player")
-    suspend fun get(): Player
+    @Query("SELECT * FROM player_settings")
+    suspend fun read(): PlayerSettings
 }

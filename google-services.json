@@ -1,33 +1,62 @@
 {
   "project_info": {
-    "project_number": "40940953078",
-    "project_id": "classic-solitaire-85241",
-    "storage_bucket": "classic-solitaire-85241.appspot.com"
+    "project_number": "761092419488",
+    "project_id": "hunter-gaming-97cd7",
+    "storage_bucket": "hunter-gaming-97cd7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:40940953078:android:4a4fca2774905df2a7bbd7",
+        "mobilesdk_app_id": "1:761092419488:android:83597527f58991a5933ec5",
         "android_client_info": {
-          "package_name": "com.huntergaming.gamedata"
+          "package_name": "com.huntergaming.classicsolitaire"
         }
       },
       "oauth_client": [
         {
-          "client_id": "40940953078-mhh3knhb9qubktafeunvkg768rhaqj4o.apps.googleusercontent.com",
+          "client_id": "761092419488-7fl9j067v04rf3s0rg1gv23m9imau1g6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDpYXOBlxq_kByB000fLHluG1elgNPbtJs"
+          "current_key": "AIzaSyAYHVAKmnUvc0t0Oi_VQffWbyNlOGS0CIQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "40940953078-mhh3knhb9qubktafeunvkg768rhaqj4o.apps.googleusercontent.com",
+              "client_id": "761092419488-7fl9j067v04rf3s0rg1gv23m9imau1g6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:761092419488:android:d6da039d97da7e3e933ec5",
+        "android_client_info": {
+          "package_name": "com.huntergaming.gamedata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "761092419488-7fl9j067v04rf3s0rg1gv23m9imau1g6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYHVAKmnUvc0t0Oi_VQffWbyNlOGS0CIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "761092419488-7fl9j067v04rf3s0rg1gv23m9imau1g6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
