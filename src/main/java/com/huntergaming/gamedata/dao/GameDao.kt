@@ -13,10 +13,10 @@ import javax.inject.Singleton
 internal interface GameDao : HunterGamingDao<Game>, HunterGamingMigrateDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    override suspend fun create(data: Game)
+    override suspend fun create(data: Game): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    override suspend fun update(data: Game)
+    override suspend fun update(data: Game): Int
 
     @Query("SELECT * FROM games ORDER BY id DESC LIMIT 1")
     override suspend fun read(): Game
@@ -27,11 +27,8 @@ internal interface GameDao : HunterGamingDao<Game>, HunterGamingMigrateDao {
     @Query("SELECT * FROM games ORDER BY score DESC LIMIT 10")
     suspend fun getTopTenGames(): List<Game>
 
-    override suspend fun migrateDataToFirestore() {
+    override suspend fun migrateData() {
+        // migrate then delete
         TODO("Migrate from Room to Firestore")
-    }
-
-    override suspend fun migrateDataToRoom() {
-        TODO("Not yet implemented")
     }
 }

@@ -6,11 +6,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.huntergaming.gamedata.GameRepo
-import com.huntergaming.gamedata.dao.GameDao
 import com.huntergaming.gamedata.HunterGamingDatabase
 import com.huntergaming.gamedata.HunterGamingRepository
 import com.huntergaming.gamedata.PlayerRepo
+import com.huntergaming.gamedata.dao.GameFirebaseDao
 import com.huntergaming.gamedata.dao.HunterGamingDao
+import com.huntergaming.gamedata.dao.HunterGamingFirebaseDao
+import com.huntergaming.gamedata.dao.PlayerFirebaseDao
+import com.huntergaming.gamedata.model.Game
 import com.huntergaming.gamedata.model.Player
 import com.huntergaming.gamedata.preferences.DataConsentPreferences
 import com.huntergaming.gamedata.preferences.FirebasePreferences
@@ -45,11 +48,17 @@ internal class DataModule {
     ).build()
 
     @Provides
-    internal fun provideGameDao(db: HunterGamingDatabase): GameDao = db.getGameDao()
+    internal fun provideGameDao(db: HunterGamingDatabase): HunterGamingDao<Game> = db.getGameDao()
 
     @Provides
     internal fun providePlayerDao(db: HunterGamingDatabase): HunterGamingDao<Player> = db.getPlayerDao()
 
     @Provides
     internal fun provideFirestoreDb(): FirebaseFirestore = Firebase.firestore
+
+    @Provides
+    internal fun providePlayerFirebaseDao(dao: HunterGamingFirebaseDao): PlayerFirebaseDao = dao
+
+    @Provides
+    internal fun provideGameFirebaseDao(dao: HunterGamingFirebaseDao): GameFirebaseDao = dao
 }
