@@ -8,10 +8,9 @@ plugins {
 
 android {
     compileSdk = 31
-    buildToolsVersion = "30.0.3"
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         targetSdk = 31
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

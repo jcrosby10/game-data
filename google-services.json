@@ -36,6 +36,35 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:761092419488:android:dc4fc7a55cbab86e933ec5",
+        "android_client_info": {
+          "package_name": "com.huntergaming.classicsolitairedata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "761092419488-7fl9j067v04rf3s0rg1gv23m9imau1g6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYHVAKmnUvc0t0Oi_VQffWbyNlOGS0CIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "761092419488-7fl9j067v04rf3s0rg1gv23m9imau1g6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:761092419488:android:d6da039d97da7e3e933ec5",
         "android_client_info": {
           "package_name": "com.huntergaming.gamedata"

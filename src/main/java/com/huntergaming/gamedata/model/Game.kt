@@ -4,9 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-/**
- * Data class for a game.
- */
 @Entity(tableName = "games")
 data class Game constructor(
     @ColumnInfo(typeAffinity = ColumnInfo.INTEGER)

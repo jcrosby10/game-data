@@ -9,13 +9,24 @@ private const val PREFS_USE_FIREBASE = "firebaseOrRoom"
 
 class HunterGamingPreferences @Inject constructor(
     @ApplicationContext private val context: Context
-) {
+) : DataConsentPreferences,
+    FirebasePreferences {
 
-    private val playerSettingsPreferences = context.getSharedPreferences("HunterGamingPlayerSettings", Context.MODE_PRIVATE)
+    private val playerSettingsPreferences = context.getSharedPreferences("HunterGaming", Context.MODE_PRIVATE)
 
-    fun shownDataConsent(): Boolean = !playerSettingsPreferences.contains(PREFS_DATA_CONSENT)
-    fun updateDataConsent() = playerSettingsPreferences.edit().putBoolean(PREFS_DATA_CONSENT, false).apply()
+    override fun shownDataConsent(): Boolean = !playerSettingsPreferences.contains(PREFS_DATA_CONSENT)
+    override fun updateDataConsent() = playerSettingsPreferences.edit().putBoolean(PREFS_DATA_CONSENT, false).apply()
 
-    fun setCanUseFirebase(consent: Boolean) = playerSettingsPreferences.edit().putBoolean(PREFS_USE_FIREBASE, consent).apply()
-    fun canUseFirebase(): Boolean = playerSettingsPreferences.getBoolean(PREFS_USE_FIREBASE, false)
+    override fun setCanUseFirebase(consent: Boolean) = playerSettingsPreferences.edit().putBoolean(PREFS_USE_FIREBASE, consent).apply()
+    override fun canUseFirebase(): Boolean = playerSettingsPreferences.getBoolean(PREFS_USE_FIREBASE, false)
+}
+
+interface DataConsentPreferences {
+    fun shownDataConsent(): Boolean
+    fun updateDataConsent()
+}
+
+interface FirebasePreferences {
+    fun setCanUseFirebase(consent: Boolean)
+    fun canUseFirebase(): Boolean
 }

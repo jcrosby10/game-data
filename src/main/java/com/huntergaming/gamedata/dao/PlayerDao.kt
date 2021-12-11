@@ -1,4 +1,4 @@
-package com.huntergaming.gamedata.data
+package com.huntergaming.gamedata.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -15,13 +15,17 @@ internal interface PlayerDao : HunterGamingDao<Player>, HunterGamingMigrateDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     override suspend fun create(data: Player)
 
-    override suspend fun migrateData() {
-        TODO("Migrate from Room to Firestore")
-    }
-
     @Update(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun update(data: Player)
 
     @Query("SELECT * FROM player")
-    suspend fun get(): Player
+    override suspend fun read(): Player
+
+    override suspend fun migrateDataToFirestore() {
+        TODO("Migrate from Room to Firestore")
+    }
+
+    override suspend fun migrateDataToRoom() {
+        TODO("Migrate data from Firestore to Room")
+    }
 }
