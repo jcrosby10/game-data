@@ -43,6 +43,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.37")
     kapt("com.google.dagger:hilt-compiler:2.37")
 
+    testImplementation("junit:junit:4.13.2")
     implementation("androidx.room:room-runtime:2.3.0")
     implementation("androidx.room:room-ktx:2.3.0")
     kapt("androidx.room:room-compiler:2.3.0")

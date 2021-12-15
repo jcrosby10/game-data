@@ -32,7 +32,9 @@ data class Player constructor(
         private lateinit var INSTANCE: Player
 
         @JvmStatic
-        fun getInstance(): Player = INSTANCE
+        fun getInstance(): Player {
+            INSTANCE = Player() //  TODO models should not be singletons
+        }
 
         @JvmStatic
         fun updateInstance(
