@@ -4,7 +4,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.huntergaming.gamedata.model.Game
 import com.huntergaming.gamedata.model.Player
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 internal class HunterGamingFirebaseDao @Inject constructor(
     private val db: FirebaseFirestore
 ) : HunterGamingMigrateDao,
@@ -12,6 +14,7 @@ internal class HunterGamingFirebaseDao @Inject constructor(
     GameFirebaseDao {
 
     override suspend fun migrateData() {
+        db.collection("").document().get().addOnCompleteListener {  }
         // migrate then delete
         TODO("Migrate from Firestore to Room")
     }

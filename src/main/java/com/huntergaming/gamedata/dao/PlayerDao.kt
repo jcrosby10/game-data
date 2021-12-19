@@ -18,7 +18,7 @@ internal interface PlayerDao : HunterGamingDao<Player>, HunterGamingMigrateDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun update(data: Player): Int
 
-    @Query("SELECT * FROM player")
+    @Query("SELECT * FROM player WHERE id = 0")
     override suspend fun read(): Player
 
     override suspend fun migrateData() {
