@@ -7,15 +7,15 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "player")
 data class Player constructor(
 
-    @ColumnInfo(typeAffinity = ColumnInfo.INTEGER)
+    @ColumnInfo(typeAffinity = ColumnInfo.TEXT)
     @PrimaryKey(autoGenerate = false)
-    var id: Int = 0,
+    var id: String,
 
-    @ColumnInfo(name = "fires_name", typeAffinity = ColumnInfo.TEXT)
-    var firstName: String,
+    @ColumnInfo(name = "name", typeAffinity = ColumnInfo.TEXT)
+    var name: String,
 
-    @ColumnInfo(name = "last_name", typeAffinity = ColumnInfo.TEXT)
-    var lastName: String,
+    @ColumnInfo(name = "email", typeAffinity = ColumnInfo.TEXT)
+    var email: String,
 
     @ColumnInfo(name = "games_played", typeAffinity = ColumnInfo.INTEGER)
     var gamesPlayed: Int = 0,

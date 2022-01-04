@@ -38,7 +38,7 @@ class HunterGamingRepository @Inject constructor(
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
-                emit(DataRequestState.Error(it.message))
+                emit(DataRequestState.Error(it.message!!))
             }
     }
 
@@ -54,7 +54,7 @@ class HunterGamingRepository @Inject constructor(
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
-                emit(DataRequestState.Error(it.message))
+                emit(DataRequestState.Error(it.message!!))
             }
     }
 
@@ -70,7 +70,7 @@ class HunterGamingRepository @Inject constructor(
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
-                emit(DataRequestState.Error(it.message))
+                emit(DataRequestState.Error(it.message!!))
             }
     }
 
@@ -86,7 +86,7 @@ class HunterGamingRepository @Inject constructor(
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
-                emit(DataRequestState.Error(it.message))
+                emit(DataRequestState.Error(it.message!!))
             }
     }
 
@@ -102,7 +102,7 @@ class HunterGamingRepository @Inject constructor(
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
-                emit(DataRequestState.Error(it.message))
+                emit(DataRequestState.Error(it.message!!))
             }
     }
 
@@ -118,7 +118,7 @@ class HunterGamingRepository @Inject constructor(
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
-                emit(DataRequestState.Error(it.message))
+                emit(DataRequestState.Error(it.message!!))
             }
     }
 
@@ -134,7 +134,7 @@ class HunterGamingRepository @Inject constructor(
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
-                emit(DataRequestState.Error(it.message))
+                emit(DataRequestState.Error(it.message!!))
             }
     }
 
@@ -150,7 +150,7 @@ class HunterGamingRepository @Inject constructor(
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
-                emit(DataRequestState.Error(it.message))
+                emit(DataRequestState.Error(it.message!!))
             }
     }
 
@@ -186,5 +186,5 @@ sealed class DataRequestState {
     object NoInternet: DataRequestState()
     object InProgress: DataRequestState()
     data class Success<T>(val data: T): DataRequestState()
-    class Error(val message: String?): DataRequestState()
+    class Error (val message: String): DataRequestState()
 }
