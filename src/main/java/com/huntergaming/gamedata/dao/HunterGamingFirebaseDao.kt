@@ -22,7 +22,6 @@ internal class HunterGamingFirebaseDao @Inject constructor(
     }
 
     override suspend fun migrateData() {
-//        db.collection("").document().get().addOnCompleteListener {  }
         // migrate then delete
         // keep firebase account for logging in
         TODO("Migrate from Firestore to Room")
@@ -40,7 +39,7 @@ internal class HunterGamingFirebaseDao @Inject constructor(
         }
 
     override suspend fun update(player: Player): Boolean {
-        TODO("Not yet implemented")
+        TODO("Update Firebase user profile and save player")
     }
 
     override suspend fun getPlayer(): Player {
