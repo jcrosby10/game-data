@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Dao
-internal interface GameDao : HunterGamingDao<Game>, HunterGamingMigrateDao {
+internal interface GameDao : RoomDao<Game>, HunterGamingMigrateDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     override suspend fun create(data: Game): Long

@@ -1,10 +1,10 @@
 package com.huntergaming.gamedata
 
 import android.util.Log
+import com.huntergaming.gamedata.dao.FirestoreGameDao
+import com.huntergaming.gamedata.dao.FirestorePlayerDao
 import com.huntergaming.gamedata.dao.GameDao
-import com.huntergaming.gamedata.dao.GameFirebaseDao
-import com.huntergaming.gamedata.dao.HunterGamingDao
-import com.huntergaming.gamedata.dao.PlayerFirebaseDao
+import com.huntergaming.gamedata.dao.RoomDao
 import com.huntergaming.gamedata.model.Game
 import com.huntergaming.gamedata.model.Player
 import com.huntergaming.gamedata.preferences.FirebasePreferences
@@ -13,28 +13,32 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class HunterGamingRepository @Inject constructor(
-    private val playerDao: HunterGamingDao<Player>,
+    private val playerDao: RoomDao<Player>,
     private val firebasePreferences: FirebasePreferences,
-    private val gameDao: HunterGamingDao<Game>,
-    private val playerFirebaseDao: PlayerFirebaseDao,
-    private val gameFirebaseDao: GameFirebaseDao
+    private val gameDao: RoomDao<Game>,
+    private val playerFirebaseDao: FirestorePlayerDao,
+    private val gameFirebaseDao: FirestoreGameDao
 ) : PlayerRepo,
     GameRepo,
     MigrateRepo {
+
+    // COMPANION OBJECTS
 
     companion object {
         private const val LOG_TAG = "HunterGamingRepository"
     }
 
-    override suspend fun create(player: Player): Flow<DataRequestState> = flow {
+    // OVERRIDDEN FUNCTIONS
+
+    override suspend fun create(id: String, name: String, email: String): Flow<DataRequestState> = flow {
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val successful =
-                if (firebasePreferences.canUseFirebase()) playerFirebaseDao.create(player)
-                else playerDao.create(player) > 0
+            val success =
+                if (firebasePreferences.canUseFirebase()) playerFirebaseDao.create(id, name, email) != null
+                else playerDao.create(Player(id, name, email)) > 0
 
-            emit(DataRequestState.Success(successful))
+            emit(DataRequestState.Success(success))
         }
             .getOrElse {
                 Log.e(LOG_TAG, it.message, it)
@@ -58,12 +62,12 @@ class HunterGamingRepository @Inject constructor(
             }
     }
 
-    override suspend fun getPlayer(): Flow<DataRequestState> = flow {
+    override suspend fun getPlayer(id: String): Flow<DataRequestState> = flow {
         emit(DataRequestState.InProgress)
 
         runCatching {
             val player =
-                if (firebasePreferences.canUseFirebase()) playerFirebaseDao.getPlayer()
+                if (firebasePreferences.canUseFirebase()) playerFirebaseDao.read(id)
                 else playerDao.read()
 
             emit(DataRequestState.Success(player))
@@ -74,13 +78,13 @@ class HunterGamingRepository @Inject constructor(
             }
     }
 
-    override suspend fun create(game: Game): Flow<DataRequestState> = flow {
+    override suspend fun create(id: String): Flow<DataRequestState> = flow {
         emit(DataRequestState.InProgress)
 
         runCatching {
             val successful =
-                if (firebasePreferences.canUseFirebase()) gameFirebaseDao.create(game)
-                else gameDao.create(game) > 0
+                if (firebasePreferences.canUseFirebase()) gameFirebaseDao.create(id) != null
+                else gameDao.create(Game(id)) > 0
 
             emit(DataRequestState.Success(successful))
         }
@@ -163,19 +167,21 @@ class HunterGamingRepository @Inject constructor(
     }
 }
 
+// INTERFACES/CLASSES
+
 interface MigrateRepo {
     suspend fun migrateDataToFirestore()
     suspend fun migrateDataToRoom()
 }
 
 interface PlayerRepo {
-    suspend fun create(player: Player): Flow<DataRequestState>
+    suspend fun create(id: String, name: String, email: String): Flow<DataRequestState>
     suspend fun update(player: Player): Flow<DataRequestState>
-    suspend fun getPlayer(): Flow<DataRequestState>
+    suspend fun getPlayer(id: String): Flow<DataRequestState>
 }
 
 interface GameRepo {
-    suspend fun create(game: Game): Flow<DataRequestState>
+    suspend fun create(id: String): Flow<DataRequestState>
     suspend fun update(game: Game): Flow<DataRequestState>
     suspend fun getMostRecentGame(): Flow<DataRequestState>
     suspend fun getHighScoreGame(): Flow<DataRequestState>

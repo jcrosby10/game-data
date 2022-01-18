@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Dao
-internal interface PlayerDao : HunterGamingDao<Player>, HunterGamingMigrateDao {
+internal interface PlayerDao : RoomDao<Player>, HunterGamingMigrateDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     override suspend fun create(data: Player): Long
@@ -18,7 +18,7 @@ internal interface PlayerDao : HunterGamingDao<Player>, HunterGamingMigrateDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun update(data: Player): Int
 
-    @Query("SELECT * FROM player WHERE id = 0")
+    @Query("SELECT * FROM player")
     override suspend fun read(): Player
 
     override suspend fun migrateData() {

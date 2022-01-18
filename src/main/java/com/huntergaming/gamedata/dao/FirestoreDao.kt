@@ -2,24 +2,30 @@ package com.huntergaming.gamedata.dao
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.huntergaming.gamedata.DataRequestState
 import com.huntergaming.gamedata.model.Game
 import com.huntergaming.gamedata.model.Player
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
-internal class HunterGamingFirebaseDao @Inject constructor(
+internal class FirestoreDao @Inject constructor(
     private val db: FirebaseFirestore
 ) : HunterGamingMigrateDao,
-    PlayerFirebaseDao,
-    GameFirebaseDao {
+    FirestorePlayerDao,
+    FirestoreGameDao {
+
+    // COMPANION OBJECTS
 
     companion object {
         private const val PLAYER_ROOT = "Players/"
-        private const val LOG_TAG = "HunterGamingFirebaseDao"
+        private const val LOG_TAG = "FirestoreDao"
     }
+
+    // OVERRIDDEN FUNCTIONS
 
     override suspend fun migrateData() {
         // migrate then delete
@@ -27,14 +33,18 @@ internal class HunterGamingFirebaseDao @Inject constructor(
         TODO("Migrate from Firestore to Room")
     }
 
-    override suspend fun create(player: Player): Boolean =
+    override suspend fun create(id: String, name: String, email: String): Player? =
+
         suspendCancellableCoroutine { cont->
-            db.collection(PLAYER_ROOT).document(player.id).set(player)
+            val player = Player(id, name, email)
+            db.collection(PLAYER_ROOT).document(id).set(player)
                 .addOnCompleteListener {
+
                     if (it.exception != null) {
                         Log.e(LOG_TAG, it.exception!!.message, it.exception)
                     }
-                    cont.resume(it.isSuccessful)
+
+                    cont.resume(if (it.isSuccessful) player else null)
                 }
         }
 
@@ -42,11 +52,11 @@ internal class HunterGamingFirebaseDao @Inject constructor(
         TODO("Update Firebase user profile and save player")
     }
 
-    override suspend fun getPlayer(): Player {
+    override suspend fun read(id: String): Player? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun create(game: Game): Boolean {
+    override suspend fun create(id: String): Game? {
         TODO("Not yet implemented")
     }
 
@@ -54,29 +64,15 @@ internal class HunterGamingFirebaseDao @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMostRecentGame(): Game {
+    override suspend fun getMostRecentGame(): Game? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getHighScoreGame(): Game {
+    override suspend fun getHighScoreGame(): Game? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getTopTenGames(): List<Game> {
+    override suspend fun getTopTenGames(): List<Game>? {
         TODO("Not yet implemented")
     }
-}
-
-interface PlayerFirebaseDao {
-    suspend fun create(player: Player): Boolean
-    suspend fun update(player: Player): Boolean
-    suspend fun getPlayer(): Player
-}
-
-interface GameFirebaseDao {
-    suspend fun create(game: Game): Boolean
-    suspend fun update(game: Game): Boolean
-    suspend fun getMostRecentGame(): Game
-    suspend fun getHighScoreGame(): Game
-    suspend fun getTopTenGames(): List<Game>
 }

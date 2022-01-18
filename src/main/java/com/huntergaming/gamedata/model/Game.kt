@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "games")
 data class Game constructor(
 
-    @ColumnInfo(typeAffinity = ColumnInfo.INTEGER)
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    @ColumnInfo(typeAffinity = ColumnInfo.TEXT)
+    @PrimaryKey(autoGenerate = false)
+    var id: String,
 
     @ColumnInfo(typeAffinity = ColumnInfo.INTEGER)
-    var score: Int
+    var score: Int = 0
 )
