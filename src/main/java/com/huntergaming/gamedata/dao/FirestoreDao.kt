@@ -2,13 +2,11 @@ package com.huntergaming.gamedata.dao
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.huntergaming.gamedata.DataRequestState
 import com.huntergaming.gamedata.model.Game
 import com.huntergaming.gamedata.model.Player
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
