@@ -35,6 +35,10 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
+    api("androidx.room:room-runtime:2.4.1")
+    implementation("androidx.room:room-ktx:2.4.1")
+    kapt("androidx.room:room-compiler:2.4.1")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 
     implementation(platform("com.google.firebase:firebase-bom:29.0.3"))
@@ -44,7 +48,4 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.40.5")
 
     testImplementation("junit:junit:4.13.2")
-    api("androidx.room:room-runtime:2.4.1")
-    implementation("androidx.room:room-ktx:2.4.1")
-    kapt("androidx.room:room-compiler:2.4.1")
 }
