@@ -3,41 +3,32 @@ package com.huntergaming.gamedata
 import android.util.Log
 import com.huntergaming.gamedata.dao.FirestoreGameDao
 import com.huntergaming.gamedata.dao.FirestorePlayerDao
-import com.huntergaming.gamedata.dao.GameDao
-import com.huntergaming.gamedata.dao.RoomDao
 import com.huntergaming.gamedata.model.Game
 import com.huntergaming.gamedata.model.Player
-import com.huntergaming.gamedata.preferences.FirebasePreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class HunterGamingRepository @Inject constructor(
-    private val playerDao: RoomDao<Player>,
-    private val firebasePreferences: FirebasePreferences,
-    private val gameDao: RoomDao<Game>,
     private val playerFirebaseDao: FirestorePlayerDao,
     private val gameFirebaseDao: FirestoreGameDao
 ) : PlayerRepo,
-    GameRepo,
-    MigrateRepo {
+    GameRepo {
 
-    // COMPANION OBJECTS
+    // companion objects
 
     companion object {
         private const val LOG_TAG = "HunterGamingRepository"
     }
 
-    // OVERRIDDEN FUNCTIONS
+    // overridden functions
 
     override suspend fun create(id: String, name: String, email: String): Flow<DataRequestState> = flow {
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val success =
-                if (firebasePreferences.canUseFirebase()) playerFirebaseDao.create(id, name, email) != null
-                else playerDao.create(Player(id, name, email)) > 0
 
+            val success = playerFirebaseDao.create(id, name, email) != null
             emit(DataRequestState.Success(success))
         }
             .getOrElse {
@@ -50,10 +41,8 @@ class HunterGamingRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val successful =
-                if (firebasePreferences.canUseFirebase()) playerFirebaseDao.update(player)
-                else playerDao.update(player) > 0
 
+            val successful = playerFirebaseDao.update(player)
             emit(DataRequestState.Success(successful))
         }
             .getOrElse {
@@ -66,10 +55,8 @@ class HunterGamingRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val player =
-                if (firebasePreferences.canUseFirebase()) playerFirebaseDao.read(id)
-                else playerDao.read()
 
+            val player = playerFirebaseDao.read(id)
             emit(DataRequestState.Success(player))
         }
             .getOrElse {
@@ -82,10 +69,8 @@ class HunterGamingRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val successful =
-                if (firebasePreferences.canUseFirebase()) gameFirebaseDao.create(id) != null
-                else gameDao.create(Game(id)) > 0
 
+            val successful = gameFirebaseDao.create(id) != null
             emit(DataRequestState.Success(successful))
         }
             .getOrElse {
@@ -98,10 +83,8 @@ class HunterGamingRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val successful =
-                if (firebasePreferences.canUseFirebase()) gameFirebaseDao.update(game)
-                else gameDao.update(game) > 0
 
+            val successful = gameFirebaseDao.update(game)
             emit(DataRequestState.Success(successful))
         }
             .getOrElse {
@@ -114,10 +97,8 @@ class HunterGamingRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val game =
-                if (firebasePreferences.canUseFirebase()) gameFirebaseDao.getMostRecentGame()
-                else gameDao.read()
 
+            val game = gameFirebaseDao.getMostRecentGame()
             emit(DataRequestState.Success(game))
         }
             .getOrElse {
@@ -130,10 +111,8 @@ class HunterGamingRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val game =
-                if (firebasePreferences.canUseFirebase()) gameFirebaseDao.getHighScoreGame()
-                else (gameDao as GameDao).getHighScoreGame()
 
+            val game = gameFirebaseDao.getHighScoreGame()
             emit(DataRequestState.Success(game))
         }
             .getOrElse {
@@ -146,10 +125,8 @@ class HunterGamingRepository @Inject constructor(
         emit(DataRequestState.InProgress)
 
         runCatching {
-            val games =
-                if (firebasePreferences.canUseFirebase()) gameFirebaseDao.getTopTenGames()
-                else (gameDao as GameDao).getTopTenGames()
 
+            val games = gameFirebaseDao.getTopTenGames()
             emit(DataRequestState.Success(games))
         }
             .getOrElse {
@@ -157,21 +134,12 @@ class HunterGamingRepository @Inject constructor(
                 emit(DataRequestState.Error(it.message!!))
             }
     }
-
-    override suspend fun migrateDataToFirestore() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun migrateDataToRoom() {
-        TODO("Not yet implemented")
-    }
 }
 
-// INTERFACES/CLASSES
+// interfaces/classes
 
-interface MigrateRepo {
-    suspend fun migrateDataToFirestore()
-    suspend fun migrateDataToRoom()
+enum class MigrateState {
+    STARTED, COMPLETED
 }
 
 interface PlayerRepo {

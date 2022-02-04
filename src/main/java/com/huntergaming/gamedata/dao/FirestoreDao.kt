@@ -12,24 +12,17 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 @Singleton
 internal class FirestoreDao @Inject constructor(
     private val db: FirebaseFirestore
-) : HunterGamingMigrateDao,
-    FirestorePlayerDao,
+) : FirestorePlayerDao,
     FirestoreGameDao {
 
-    // COMPANION OBJECTS
+    // companion objects
 
     companion object {
         private const val PLAYER_ROOT = "Players/"
         private const val LOG_TAG = "FirestoreDao"
     }
 
-    // OVERRIDDEN FUNCTIONS
-
-    override suspend fun migrateData() {
-        // migrate then delete
-        // keep firebase account for logging in
-        TODO("Migrate from Firestore to Room")
-    }
+    // overridden functions
 
     override suspend fun create(id: String, name: String, email: String): Player? =
 
