@@ -34,7 +34,13 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":ui")))
+    implementation(project(mapOf("path" to ":authentication")))
+
     implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 

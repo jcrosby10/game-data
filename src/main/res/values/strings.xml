@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_create_account">There was an error creating your account.</string>
+    <string name="error_update_player">There was an error your updating account information.</string>
+    <string name="error_get_player">There was an error retrieving your account information.</string>
+    <string name="error_create_game">There was an error creating a new game.</string>
+    <string name="error_update_game">There was an error updating the game.</string>
+    <string name="error_load_game">There was an error loading your saved game.</string>
+    <string name="error_high_score">There was an error loading your high score games.</string>
+    <string name="error_update_name">There was an error updating your name.</string>
+</resources>
